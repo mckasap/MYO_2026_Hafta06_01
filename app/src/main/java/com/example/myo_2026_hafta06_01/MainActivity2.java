@@ -31,7 +31,11 @@ public class MainActivity2 extends AppCompatActivity {
     public void dataBaseAC(){
         db = openOrCreateDatabase("mydb.db", MODE_PRIVATE, null);
     }
+    public void dataBaseKAPA(){
+        db.close();
+    }
     public void ListViewGuncelle() {
+        dataBaseAC();
         liste.clear();
 
         db.execSQL("Create Table if not exists " +
@@ -61,7 +65,7 @@ public class MainActivity2 extends AppCompatActivity {
                     android.R.layout.simple_list_item_1,
                     liste);
             lv.setAdapter(adapter);
-
+dataBaseKAPA();
         }
     }
     @Override
@@ -98,10 +102,41 @@ public class MainActivity2 extends AppCompatActivity {
                         etEmail.setText(""+c.getString(3));
                     }
                     Toast.makeText(getApplicationContext(),"" + e.getId(),Toast.LENGTH_LONG).show();
-                    db.close();
+                    dataBaseKAPA();
                 }
             });
-        db.close();
+        dataBaseKAPA();
         }
+
+
+     public void Ekle(View v){
+     dataBaseAC();
+
+         db.execSQL("Insert Into Employee(name,surname,email) " +
+                 "values('" + etAd.getText().toString() + "','" +
+                     etSoyad.getText().toString() + "','" +
+                    etEmail.getText().toString() + "')");
+         ListViewGuncelle();
+dataBaseKAPA();
+
+     }
+
+     public void Sil(View v){
+
+    }
+
+     public void Guncelle(View v){
+
+         dataBaseAC();
+         db.execSQL("Update Employee set " +
+                 "name ='" + etAd.getText().toString() + "'," +
+                 "surname ='" + etSoyad.getText().toString() + "'," +
+                 "email ='" + etEmail.getText().toString() + "'"+
+                 "where id =" + etId.getText().toString());
+         ListViewGuncelle();
+         dataBaseKAPA();
+
+     }
+
 
     }
