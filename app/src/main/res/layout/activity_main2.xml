@@ -8,6 +8,7 @@
     tools:context=".MainActivity2">
 
     <ListView
+        android:id="@+id/mylistView"
         android:layout_width="400dp"
         android:layout_height="385dp"
         app:layout_constraintBottom_toBottomOf="parent"
