@@ -36,18 +36,15 @@ public class MainActivity2 extends AppCompatActivity {
     }
     public void ListViewGuncelle() {
         dataBaseAC();
-        liste.clear();
+        if (!liste.isEmpty())
+            liste.clear();
 
-        db.execSQL("Create Table if not exists " +
-                "Employee( id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-                "name VARCHAR, " +
-                "surname VARCHAR, " +
-                "email VARCHAR)");
 
         Cursor c = db.rawQuery("Select * from Employee", null);
 
-        c.moveToFirst();
-        if (c != null) {
+
+        if (c != null && c.getCount()!=0) {
+            c.moveToFirst();
 
             do {
                 int id = c.getInt(0);
@@ -80,6 +77,12 @@ dataBaseKAPA();
         });
 
         dataBaseAC();
+        db.execSQL("Create Table if not exists " +
+                "Employee( id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                "name VARCHAR, " +
+                "surname VARCHAR, " +
+                "email VARCHAR)");
+        dataBaseKAPA();
         lv=(ListView)findViewById(R.id.mylistView);
         etAd=(EditText)findViewById(R.id.etAd);
         etSoyad=(EditText)findViewById(R.id.etSoyad);
@@ -87,7 +90,7 @@ dataBaseKAPA();
         etId=(EditText)findViewById(R.id.etId);
 
 
-            ListViewGuncelle();
+       ListViewGuncelle();
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -122,6 +125,12 @@ dataBaseKAPA();
      }
 
      public void Sil(View v){
+         dataBaseAC();
+         db.execSQL("Delete from Employee " +
+                     "where id =" + etId.getText().toString());
+
+         dataBaseKAPA();
+         ListViewGuncelle();
 
     }
 
